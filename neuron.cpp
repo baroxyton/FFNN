@@ -1,4 +1,4 @@
-#ifndef NEURON_CPP 
+#ifndef NEURON_CPP
 #define NEURON_CPP
 #include <string>
 #include <vector>
@@ -7,17 +7,21 @@
 #include <time.h>
 #include "neuron.h"
 #include "layer.h"
-double randomFloat(double scalar){
-	return (rand()/RAND_MAX * scalar*2) - scalar;
+#include <iostream>
+double randomFloat(double scalar)
+{
+	return ((double)rand() / (double)RAND_MAX * scalar * 2) - scalar;
 };
-Neuron::Neuron(Layer* inputl, Layer* outputl){
-	input = inputl;
-	output = outputl;	
-	std::vector<double> weights;
-	for(int i = 0; i < input->neurons.size(); i++){
-		weights.push_back(randomFloat(1));	
-	}
-	double bias = randomFloat(1);
-}
 
+Neuron::Neuron()
+{
+	bias = randomFloat(1);
+}
+void Neuron::generateWeights(int num)
+{
+	for (int i = 0; i < num; i++)
+	{
+		weights.push_back(randomFloat(1));
+	}
+}
 #endif

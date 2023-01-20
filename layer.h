@@ -1,7 +1,7 @@
 #ifndef LAYER_H
 #define LAYER_H
 #include <vector>
-class Neuron;
+#include "neuron.h"
 class Layer{
 	public:
 		Layer* inputLayer;
