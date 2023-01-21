@@ -13,5 +13,6 @@ class Layer{
 		std::vector<Neuron*> neurons;
 		Layer(int num, Layer* inputLayer, Layer* outputLayer);
 		Layer(int num);
+		void activate(std::vector<double> inputs);
 };
 #endif
