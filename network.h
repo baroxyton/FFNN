@@ -12,6 +12,7 @@ public:
 	Layer *output;
 	Network(std::vector<int> numlayers);
 	void activate(std::vector<double> inputs);
+	void train(std::vector<std::vector<std::vector<double>>> trainingdata, int amount, int display);
 };
 
 #endif

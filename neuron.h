@@ -4,7 +4,7 @@
 class Layer;
 double randomFloat(double scalar);
 double ReLU(double input);
-double ReLuDerrivative(double input);
+double ReLUDerrivative(double input);
 class Neuron
 {
 public:
@@ -17,6 +17,8 @@ public:
 	bool isOutput;
 	void activate(std::vector<double> inputs);
 	double output;
+	double outputDerrivative;
+	double error;
 };
 
 #endif

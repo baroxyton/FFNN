@@ -14,5 +14,6 @@ class Layer{
 		Layer(int num, Layer* inputLayer, Layer* outputLayer);
 		Layer(int num);
 		void activate(std::vector<double> inputs);
+		void propagate(std::vector<double> expectedOutput);
 };
 #endif

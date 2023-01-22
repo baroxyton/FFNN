@@ -4,8 +4,7 @@
 #include "layer.h"
 #include <vector>
 #include <iostream>
-class Neuron;
-class Layer;
+const double learning_rate = 0.3;
 void Layer::generateNeurons(int num)
 {
 }
@@ -15,6 +14,8 @@ Layer::Layer(int num)
 	{
 		Neuron *newNeuron = new Neuron{};
 		neurons.push_back(newNeuron);
+		isOutput = false;
+		isInput = false;
 	}
 }
 void Layer::connect(Layer *inputLayera, Layer *outputLayera)
@@ -54,4 +55,33 @@ void Layer::activate(std::vector<double> inputs = std::vector<double>{})
 		outputLayer->activate();
 	}
 }
+void Layer::propagate(std::vector<double> expectedOutput=std::vector<double>{})
+{
+	if (isOutput)
+	{
+		for (int i = 0; i < neurons.size(); i++)
+		{
+			double sum = neurons[i]->output - expectedOutput[i];
+			neurons[i]->error = sum * neurons[i]->outputDerrivative;
+			neurons[i]->bias -= learning_rate * neurons[i]->error;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < neurons.size(); i++)
+		{
+			double sum = 0;
+			for(int j = 0; j < outputLayer->neurons.size(); j++){
+				double adjustedWeight = outputLayer->neurons[j]->weights[i] - (learning_rate * outputLayer->neurons[j]->error * neurons[i]->output);
+				outputLayer->neurons[j]->weights[i] = adjustedWeight;
+				sum += outputLayer->neurons[j]->error * neurons[i]->weights[j];
+			}
+			neurons[i]->error = sum * neurons[i]->outputDerrivative;
+			neurons[i]->bias = learning_rate * neurons[i]->error;
+		}
+	};
+	if(!isInput){
+		inputLayer->propagate();
+	}
+};
 #endif

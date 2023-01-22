@@ -11,6 +11,7 @@ Network::Network(std::vector<int> numlayers)
 {
 	// Init random number generator
 	srand(time(NULL));
+	//srand(100);
 	for (int i = 0; i < numlayers.size(); i++)
 	{
 		if (i == 0)
@@ -49,18 +50,45 @@ Network::Network(std::vector<int> numlayers)
 		}
 		layers[i]->connect(layers[i - 1], layers[i + 1]);
 		continue;
-	}
+	};
 }
 void Network::activate(std::vector<double> inputs)
 {
 	input->activate(inputs);
 }
+void Network::train(std::vector<std::vector<std::vector<double>>> trainingdata, int amount = 1000, int display = 10)
+	{
+		for (int j = 0; j < amount; j++)
+		{
+			for (int i = 0; i < trainingdata.size(); i++)
+			{
+				activate(trainingdata[i][0]);
+				output->propagate(trainingdata[i][1]);
+			}
+			if (j % display == 0)
+			{
+				std::cout << j << "/" << amount << std::endl;
+			}
+		}
+	}
 int main()
 {
-	Network testNetwork{std::vector<int>{10, 10, 10}};
-	testNetwork.activate(std::vector<double>{5, 5, 5, 5, 5, 5, 5, 5, 5, 5});
+	std::vector<std::vector<std::vector<double>>> testData {
+        std::vector<std::vector<double>>{std::vector<double>{0, 0}, std::vector<double>{0}},
+        std::vector<std::vector<double>>{std::vector<double>{1, 0}, std::vector<double>{0}},
+        std::vector<std::vector<double>>{std::vector<double>{0, 1}, std::vector<double>{0}},
+        std::vector<std::vector<double>>{std::vector<double>{1, 1}, std::vector<double>{1}}};
+	Network testNetwork{std::vector<int>{2, 16, 16, 1}};
+	testNetwork.activate(std::vector<double>{1,1});
 	for (auto neuron : testNetwork.output->neurons)
 	{
 		std::cout << neuron->output << std::endl;
 	}
+	testNetwork.train(testData, 10000, 1000);
+	testNetwork.activate(std::vector<double>{1,1});
+	for (auto neuron : testNetwork.output->neurons)
+	{
+		std::cout << neuron->output << std::endl;
+	}
+
 }
